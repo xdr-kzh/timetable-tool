@@ -15,8 +15,10 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     tabwidget.cpp \
-    timetable.cpp
+    timetable.cpp \
+    addtaskwidget.cpp
 
 HEADERS  += mainwindow.h \
     tabwidget.h \
-    timetable.h
+    timetable.h \
+    addtaskwidget.h
