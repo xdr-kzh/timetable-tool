@@ -5,7 +5,7 @@
 #include <QMenu>
 #include <QAction>
 
-#include "tabwidget.h"
+#include "addtaskwidget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -16,9 +16,11 @@ public:
     ~MainWindow();
 
 private:
-    TabWidget* tabWidget_;
+    AddTaskWidget* addTaskWidget_;
     QMenu* menu_;
-    QAction* newGroupAction_;
+    QAction* saveAction_;
+
+    TimeTable* timetable_;
 };
 
 #endif // MAINWINDOW_H
