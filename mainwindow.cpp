@@ -7,7 +7,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    setMinimumSize( 1024, 400);
+    setMinimumSize( 1100, 400);
+    setWindowTitle("Infovuz Timetable Tool V. 0.1");
 
     timetable_ = new TimeTable( "ContactBookV2.db",this);
     addTaskWidget_ = new AddTaskWidget( timetable_, this);

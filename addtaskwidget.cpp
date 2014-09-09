@@ -47,19 +47,20 @@ AddTaskWidget::AddTaskWidget(TimeTable* timetable,QWidget *parent) :
     teacherSureNameLineEdit = new QLineEdit( this);
 
     setCellWidget( 0,0,groupNameLineEdit);
-    setCellWidget( 0,1,weekComboBox);
-    setCellWidget( 0,2,eventNameLineEdit);
-    setCellWidget( 0,3,eventTimeComboBox);
-    setCellWidget( 0,4,eventTypeComboBox);
-    setCellWidget( 0,5,eventLocationLineEdit);
-    setCellWidget( 0,6,dayComboBox);
+    setCellWidget( 0,1,dayComboBox);
+    setCellWidget( 0,2,eventTimeComboBox);
+    setCellWidget( 0,3,weekComboBox);
+    setCellWidget( 0,4,eventNameLineEdit);
+    setCellWidget( 0,5,eventTypeComboBox);
+    setCellWidget( 0,6,eventLocationLineEdit);
     setCellWidget( 0,7,teacherLastNameLineEdit);
     setCellWidget( 0,8,teacherNameLineEdit);
     setCellWidget( 0,9,teacherSureNameLineEdit);
 
     QStringList headerLabels;
-    headerLabels << "Группа" << "Неделя" << "Название"<<"Время"<<"Тип занятия"<<"Место занятия"<<"День"<<"Фамилия"<<"Имя"<<"Отчество";
+    headerLabels << "Группа" <<"День"<<"Время"<< "Неделя" << "Название"<<"Тип занятия"<<"Место занятия"<<"Фамилия"<<"Имя"<<"Отчество";
     setHorizontalHeaderLabels( headerLabels);
+    resizeColumnsToContents();
 }
 
 void AddTaskWidget::saveTask()
