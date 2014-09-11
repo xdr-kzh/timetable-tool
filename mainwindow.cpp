@@ -2,16 +2,16 @@
 
 #include <QMenuBar>
 #include <QKeySequence>
+#include <QScrollArea>
 #include "timetable.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    setMinimumSize( 1100, 400);
     setWindowTitle("Infovuz Timetable Tool V. 0.1");
 
     timetable_ = new TimeTable( "ContactBookV2.db",this);
-    addTaskWidget_ = new AddTaskWidget( timetable_, this);
+    groupWidget_ = new GroupTimeTableWidget( timetable_, this);
 
     menu_ = new QMenu( QString::fromUtf8("Файл"), this);
 
@@ -22,9 +22,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     menuBar()->addMenu( menu_);
 
-    setCentralWidget( addTaskWidget_);
+    setCentralWidget( groupWidget_);
+    QScrollArea *scrollArea = new QScrollArea(this);
+    scrollArea->setWidget( groupWidget_);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setMinimumSize( 1100, 400);
 
-    connect( saveAction_, SIGNAL(triggered()), addTaskWidget_, SLOT(saveTask()));
+//    connect( saveAction_, SIGNAL(triggered()), gr, SLOT(saveTask()));
 }
 
 MainWindow::~MainWindow()

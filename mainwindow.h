@@ -5,7 +5,7 @@
 #include <QMenu>
 #include <QAction>
 
-#include "addtaskwidget.h"
+#include "grouptimetablewidget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -16,7 +16,7 @@ public:
     ~MainWindow();
 
 private:
-    AddTaskWidget* addTaskWidget_;
+    GroupTimeTableWidget* groupWidget_;
     QMenu* menu_;
     QAction* saveAction_;
 
