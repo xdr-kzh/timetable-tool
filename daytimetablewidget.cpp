@@ -3,12 +3,15 @@
 #include <QDate>
 #include <QDebug>
 #include <QMessageBox>
+#include <QHeaderView>
+#include <QObject>
+#include "definitions.h"
 
 const int DayTimeTableWidget::EVENT_COUNT = 7;
+const int DayTimeTableWidget::MINIMUM_HEIGHT = 260;
 
-DayTimeTableWidget::DayTimeTableWidget( int dayNumber, TimeTable* timetable, QWidget *parent) :
+DayTimeTableWidget::DayTimeTableWidget( int dayNumber,QWidget *parent) :
     dayNumber_( dayNumber),
-    timetable_( timetable),
     QGroupBox(parent)
 {
     tableWidget_ = new QTableWidget( this);
@@ -17,17 +20,18 @@ DayTimeTableWidget::DayTimeTableWidget( int dayNumber, TimeTable* timetable, QWi
     headerLabels << "Время"<< "Неделя" << "Название"<<"Тип занятия"<<"Место занятия"<<"Фамилия"<<"Имя"<<"Отчество";
     tableWidget_->setHorizontalHeaderLabels( headerLabels);
 
-    nameLabel_ = new QLabel( QDate::longDayName( dayNumber), this);
+    nameLabel_ = new QLabel( QDate::longDayName( dayNumber+1), this);
 
-    addTaskAction_ = new QAction( this);
     addTaskButton_ = new QPushButton( QString::fromUtf8("Добавить пару"), this);
 
     mainLayout_ = new QVBoxLayout(this);
     mainLayout_->addWidget( nameLabel_);
     mainLayout_->addWidget( addTaskButton_);
     mainLayout_->addWidget( tableWidget_);
-setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Maximum);
     connect( addTaskButton_, SIGNAL(clicked()), this, SLOT(addTask()));
+    setAutoFillBackground(true);
+
+    setMinimumHeight( MINIMUM_HEIGHT);
 }
 
 void DayTimeTableWidget::addTask()
@@ -37,9 +41,9 @@ void DayTimeTableWidget::addTask()
     int currentRow = tableWidget_->rowCount();
     tableWidget_->insertRow( currentRow);
 
+    QComboBox* eventTimeComboBox;
     QComboBox* weekComboBox;
     QLineEdit* eventNameLineEdit;
-    QComboBox* eventTimeComboBox;
     QComboBox* eventTypeComboBox;
     QLineEdit* eventLocationLineEdit;
     QLineEdit* teacherNameLineEdit;
@@ -79,54 +83,66 @@ void DayTimeTableWidget::addTask()
     tableWidget_->setCellWidget( currentRow,6,teacherNameLineEdit);
     tableWidget_->setCellWidget( currentRow,7,teacherSureNameLineEdit);
     tableWidget_->resizeRowsToContents();
-//    this->resize( tableWidget_->width(), tableWidget_->height());
     tableWidget_->resizeColumnsToContents();
 }
 
-void DayTimeTableWidget::saveTask()
+DayTimeTableWidget::ValueList* DayTimeTableWidget::saveTask()
 {
     qDebug() << "Saving data in database";
     for( int i = 0; i < tableWidget_->rowCount(); i++)
     {
-        QString groupName;
-        int week;
-        int eventTimeNumber;
-        QString eventName;
-        int eventType;
-        QString location;
-        int day;
-        QString teacherName;
-        QString teacherLastName;
-        QString teacherSureName;
+        ValueMapPtr valueMap = ValueMapPtr( new ValueMap);
 
         for( int j = 0; j < tableWidget_->columnCount(); j++)
         {
-            tableWidget_->itemAt( i, j)->text();
+            QWidget* widget = tableWidget_->cellWidget( i, j);
+            QComboBox* combo;
+            QLineEdit* lineEdit;
+            switch( j)
+            {
+            case 0:
+                combo = qobject_cast<QComboBox*>(widget);
+                qDebug() << QString::number(combo->currentIndex()+1);
+                valueMap->insert( EVENT_TIME_KEY, QString::number(combo->currentIndex()+1));
+                break;
+            case 1:
+                combo = qobject_cast<QComboBox*>(widget);
+                qDebug() << QString::number(combo->currentIndex()+1);
+                valueMap->insert( WEEK_KEY, QString::number(combo->currentIndex()+1));
+                break;
+            case 2:
+                lineEdit = qobject_cast<QLineEdit*>(widget);
+                qDebug() << lineEdit->text();
+                valueMap->insert( EVENT_NAME_KEY, lineEdit->text());
+                break;
+            case 3:
+                combo = qobject_cast<QComboBox*>(widget);
+                qDebug() << QString::number(combo->currentIndex()+1);
+                valueMap->insert( EVENT_TYPE_KEY, QString::number(combo->currentIndex()+1));
+                break;
+            case 4:
+                lineEdit = qobject_cast<QLineEdit*>(widget);
+                qDebug() << lineEdit->text();
+                valueMap->insert( EVENT_LOCATION_KEY, lineEdit->text());
+                break;
+            case 5:
+                lineEdit = qobject_cast<QLineEdit*>(widget);
+                qDebug() << lineEdit->text();
+                valueMap->insert( NAME_KEY, lineEdit->text());
+                break;
+            case 6:
+                lineEdit = qobject_cast<QLineEdit*>(widget);
+                qDebug() << lineEdit->text();
+                valueMap->insert( LAST_NAME_KEY, lineEdit->text());
+                break;
+            case 7:
+                lineEdit = qobject_cast<QLineEdit*>(widget);
+                qDebug() << lineEdit->text();
+                valueMap->insert( SURE_NAME_KEY, lineEdit->text());
+                break;
+            }
         }
+        valueList_.push_back( valueMap);
     }
-
-//    if( !groupNameLineEdit->text().isEmpty() && !eventNameLineEdit->text().isEmpty() &&
-//            !eventLocationLineEdit->text().isEmpty() && !teacherNameLineEdit->text().isEmpty() && !teacherLastNameLineEdit->text().isEmpty() &&
-//            !teacherSureNameLineEdit->text().isEmpty())
-//    {
-//        // если обе недели выбраны
-//        if( weekComboBox->currentIndex() == 2)
-//        {
-//            timetable_->addEvent( groupNameLineEdit->text(), 1, eventTimeComboBox->currentIndex()+1,
-//                eventNameLineEdit->text(), eventTypeComboBox->currentIndex()+1, eventLocationLineEdit->text(), dayComboBox->currentIndex(),
-//                    teacherNameLineEdit->text(), teacherLastNameLineEdit->text(), teacherSureNameLineEdit->text());
-//            timetable_->addEvent( groupNameLineEdit->text(), 2, eventTimeComboBox->currentIndex()+1,
-//                eventNameLineEdit->text(), eventTypeComboBox->currentIndex()+1, eventLocationLineEdit->text(), dayComboBox->currentIndex(),
-//                    teacherNameLineEdit->text(), teacherLastNameLineEdit->text(), teacherSureNameLineEdit->text());
-//        }
-//        else
-//            timetable_->addEvent( groupNameLineEdit->text(), weekComboBox->currentIndex()+1, eventTimeComboBox->currentIndex()+1,
-//                eventNameLineEdit->text(), eventTypeComboBox->currentIndex()+1, eventLocationLineEdit->text(), dayComboBox->currentIndex(),
-//                    teacherNameLineEdit->text(), teacherLastNameLineEdit->text(), teacherSureNameLineEdit->text());
-//    }
-//    else
-//    {
-//        QMessageBox::warning( this, QString::fromUtf8("Ошибка записи"), QString::fromUtf8("Заполни все поля, Трекин)"));
-//    }
-
+    return &valueList_;
 }
