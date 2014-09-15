@@ -15,7 +15,7 @@
 #include <QMap>
 #include <QList>
 
-class DayTimeTableWidget : public QGroupBox//QTableWidget
+class DayTimeTableWidget : public QGroupBox
 {
     Q_OBJECT
 public:
@@ -45,6 +45,7 @@ private:
 
     static const int EVENT_COUNT;
     static const int MINIMUM_HEIGHT;
+    static const int MILITARY_EVENT_NUMBER;
 };
 
 #endif // ADDTASKWIDGET_H

@@ -7,7 +7,8 @@
 #include <QObject>
 #include "definitions.h"
 
-const int DayTimeTableWidget::EVENT_COUNT = 7;
+const int DayTimeTableWidget::EVENT_COUNT = 8;
+const int DayTimeTableWidget::MILITARY_EVENT_NUMBER = 8;
 const int DayTimeTableWidget::MINIMUM_HEIGHT = 260;
 
 DayTimeTableWidget::DayTimeTableWidget( int dayNumber,QWidget *parent) :
@@ -60,7 +61,12 @@ void DayTimeTableWidget::addTask()
     eventTimeComboBox = new QComboBox( this);
     QStringList timeList;
     for( int i = 1; i <= EVENT_COUNT; i++)
-        timeList << QString::number( i);
+    {
+        if( i == MILITARY_EVENT_NUMBER)
+            timeList << QString::fromUtf8("Военная подготовка");
+        else
+            timeList << QString::number( i);
+    }
     eventTimeComboBox->addItems( timeList);
 
     eventTypeComboBox = new QComboBox( this);

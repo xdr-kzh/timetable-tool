@@ -31,6 +31,7 @@ TimeTable::TimeTable(QString dbFileName, QObject *parent) :
     time.insert( std::pair< int, std::pair<int,int> >( 5, std::pair<int, int>( 935, 1030)));
     time.insert( std::pair< int, std::pair<int,int> >( 6, std::pair<int, int>( 1045, 1140)));
     time.insert( std::pair< int, std::pair<int,int> >( 7, std::pair<int, int>( 1155, 1250)));
+    time.insert( std::pair< int, std::pair<int,int> >( 8, std::pair<int, int>( 480, 920)));
 }
 
 void TimeTable::addEvent( QString groupName, int week, int eventTimeNumber, QString eventName,

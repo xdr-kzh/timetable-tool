@@ -77,6 +77,7 @@ void GroupTimeTableWidget::saveTask()
 
 void GroupTimeTableWidget::clearAll()
 {
+    groupNameLineEdit_->clear();
     for( TimetableList::iterator it = timetableList_.begin(); it != timetableList_.end(); ++it)
     {
         (*it)->clear();
