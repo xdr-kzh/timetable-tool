@@ -146,3 +146,12 @@ DayTimeTableWidget::ValueList* DayTimeTableWidget::saveTask()
     }
     return &valueList_;
 }
+
+void DayTimeTableWidget::clear()
+{
+    if( tableWidget_->rowCount())
+    {
+        while( tableWidget_->rowCount())
+            tableWidget_->removeRow( 0);
+    }
+}

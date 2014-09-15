@@ -24,6 +24,7 @@ private:
     QVBoxLayout* layout_;
     QMenu* menu_;
     QAction* saveAction_;
+    QAction* clearAction_;
     QScrollArea *scrollArea_;
 
     TimeTable* timetable_;

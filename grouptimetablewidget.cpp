@@ -9,16 +9,23 @@ GroupTimeTableWidget::GroupTimeTableWidget(TimeTable* timetable,QWidget *parent)
     timetable_( timetable),
     QWidget(parent)
 {
-    groupNameLineEdit_ = new QLineEdit( this);
-    saveButton_ = new QPushButton( QString::fromUtf8("Сохранить расписание группы"), this);
+    titleGroupBox_ = new QGroupBox(this);
+
+    groupNameLineEdit_ = new QLineEdit( titleGroupBox_);
+    saveButton_ = new QPushButton( QString::fromUtf8("Сохранить расписание группы"), titleGroupBox_);
+    clearButton_ = new QPushButton( QString::fromUtf8("Очистить"), titleGroupBox_);
+
+    manageLayout_ = new QHBoxLayout(titleGroupBox_);
+    manageLayout_->addWidget( groupNameLineEdit_);
+    manageLayout_->addWidget( saveButton_);
+    manageLayout_->addWidget( clearButton_);
 
     mainLayout_ = new QGridLayout(this);
-    mainLayout_->addWidget( saveButton_, 0,0);
-    mainLayout_->addWidget( groupNameLineEdit_, 1,0);
+    mainLayout_->addWidget( titleGroupBox_, 0,0);
 
-    for( int i = 2; i <= DAY_COUNT+1; i++)
+    for( int i = 1; i <= DAY_COUNT; i++)
     {
-        DayTimeTableWidget* dayWidget = new DayTimeTableWidget( i-2, this);
+        DayTimeTableWidget* dayWidget = new DayTimeTableWidget( i-1, this);
         timetableList_.push_back( dayWidget);
         mainLayout_->addWidget( dayWidget, i, 0);
     }
@@ -27,6 +34,7 @@ GroupTimeTableWidget::GroupTimeTableWidget(TimeTable* timetable,QWidget *parent)
 
     setAutoFillBackground(true);
     connect( saveButton_, SIGNAL(clicked()), this, SLOT(saveTask()));
+    connect( clearButton_, SIGNAL(clicked()), this, SLOT(clearAll()));
 }
 
 void GroupTimeTableWidget::saveTask()
@@ -63,5 +71,14 @@ void GroupTimeTableWidget::saveTask()
 //                QMessageBox::warning( this, QString::fromUtf8("Ошибка записи"), QString::fromUtf8("Заполни все поля, Трекин)"));
 //            }
         }
+    }
+    clearAll();
+}
+
+void GroupTimeTableWidget::clearAll()
+{
+    for( TimetableList::iterator it = timetableList_.begin(); it != timetableList_.end(); ++it)
+    {
+        (*it)->clear();
     }
 }

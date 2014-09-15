@@ -29,23 +29,22 @@ public:
 
 public slots:
     ValueList* saveTask();
+    void clear();
 
 private slots:
     void addTask();
 
 private:
-
     QPushButton* addTaskButton_;
     QLabel* nameLabel_;
     QTableWidget* tableWidget_;
     QVBoxLayout* mainLayout_;
-    int dayNumber_;
 
-private:
+    int dayNumber_;
+    ValueList valueList_;
+
     static const int EVENT_COUNT;
     static const int MINIMUM_HEIGHT;
-
-    ValueList valueList_;
 };
 
 #endif // ADDTASKWIDGET_H

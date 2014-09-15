@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QPushButton>
+#include <QGroupBox>
 #include <list>
 
 #include "daytimetablewidget.h"
@@ -18,11 +19,16 @@ public:
 
 public slots:
     void saveTask();
+    void clearAll();
 
 private:
     QGridLayout* mainLayout_;
-    QLineEdit* groupNameLineEdit_;        
+    QLineEdit* groupNameLineEdit_;
+    QPushButton* clearButton_;
     QPushButton* saveButton_;
+
+    QHBoxLayout* manageLayout_;
+    QGroupBox* titleGroupBox_;
 
     TimeTable* timetable_;
 

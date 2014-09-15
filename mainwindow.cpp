@@ -2,23 +2,28 @@
 
 #include <QMenuBar>
 #include <QKeySequence>
+
 #include "timetable.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     layout_ = new QVBoxLayout(this);
-    setWindowTitle("Infovuz Timetable Tool v0.2");
+    setWindowTitle("InfoVUZ Timetable Tool v0.2.1");
 
     timetable_ = new TimeTable( "ContactBookV2.db",this);
     groupWidget_ = new GroupTimeTableWidget( timetable_, this);
 
     menu_ = new QMenu( QString::fromUtf8("Файл"), this);
 
-    QKeySequence keySequence = Qt::CTRL + Qt::Key_S;
+    QKeySequence saveKeySequence = Qt::CTRL + Qt::Key_S;
+    QKeySequence clearKeySequence = Qt::CTRL + Qt::Key_Q;
     saveAction_ = new QAction( QString::fromUtf8("Сохранить занятие"), this);
-    saveAction_->setShortcut( keySequence);
+    clearAction_ = new QAction( QString::fromUtf8("Очистить"), this);
+    saveAction_->setShortcut( saveKeySequence);
+    clearAction_->setShortcut( clearKeySequence);
     menu_->addAction( saveAction_);
+    menu_->addAction( clearAction_);
 
     menuBar()->addMenu( menu_);
 
@@ -36,8 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow()
-{
-}
+{}
 
 void MainWindow::resizeEvent(QResizeEvent* event)
 {
