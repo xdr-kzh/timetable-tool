@@ -134,12 +134,12 @@ DayTimeTableWidget::ValueList* DayTimeTableWidget::saveTask()
             case 5:
                 lineEdit = qobject_cast<QLineEdit*>(widget);
                 qDebug() << lineEdit->text();
-                valueMap->insert( NAME_KEY, lineEdit->text());
+                valueMap->insert( LAST_NAME_KEY, lineEdit->text());
                 break;
             case 6:
                 lineEdit = qobject_cast<QLineEdit*>(widget);
                 qDebug() << lineEdit->text();
-                valueMap->insert( LAST_NAME_KEY, lineEdit->text());
+                valueMap->insert( NAME_KEY, lineEdit->text());
                 break;
             case 7:
                 lineEdit = qobject_cast<QLineEdit*>(widget);
