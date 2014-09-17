@@ -160,4 +160,5 @@ void DayTimeTableWidget::clear()
         while( tableWidget_->rowCount())
             tableWidget_->removeRow( 0);
     }
+    valueList_.clear();
 }

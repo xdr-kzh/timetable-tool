@@ -58,13 +58,7 @@ void GroupTimeTableWidget::saveTask()
 //                    !teacherSureNameLineEdit->text().isEmpty())
 //            {
                 // если обе недели выбраны
-                if( weekCount == 3)
-                {
-                    timetable_->addEvent( groupNameLineEdit_->text(), 1, eventTimeNumber, eventName, eventType, location, (*it)->getDayNumber(), name, lastName, sureName);
-                    timetable_->addEvent( groupNameLineEdit_->text(), 2, eventTimeNumber, eventName, eventType, location, (*it)->getDayNumber(), name, lastName, sureName);
-                }
-                else
-                    timetable_->addEvent( groupNameLineEdit_->text(), weekCount, eventTimeNumber, eventName, eventType, location, (*it)->getDayNumber(), name, lastName, sureName);
+                timetable_->addEvent( groupNameLineEdit_->text(), weekCount, eventTimeNumber, eventName, eventType, location, (*it)->getDayNumber(), name, lastName, sureName);
 //            }
 //            else
 //            {

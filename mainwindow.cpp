@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     layout_ = new QVBoxLayout(this);
-    setWindowTitle("InfoVUZ Timetable Tool v0.2.1");
+    setWindowTitle("InfoVUZ Timetable Tool v0.2.2");
 
     timetable_ = new TimeTable( "ContactBookV2.db",this);
     groupWidget_ = new GroupTimeTableWidget( timetable_, this);
