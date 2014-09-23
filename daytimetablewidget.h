@@ -11,6 +11,8 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QString>
+#include <QPoint>
+#include <QResizeEvent>
 
 #include <QMap>
 #include <QList>
@@ -30,9 +32,11 @@ public:
 public slots:
     ValueList* saveTask();
     void clear();
+    void customMenuRequested(QPoint pos);
 
 private slots:
     void addTask();
+    void removeTask( int row);
 
 private:
     QPushButton* addTaskButton_;

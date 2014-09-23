@@ -5,6 +5,10 @@
 #include <QMessageBox>
 #include <QHeaderView>
 #include <QObject>
+#include <QAction>
+#include <QMenu>
+#include <QSignalMapper>
+
 #include "definitions.h"
 
 const int DayTimeTableWidget::EVENT_COUNT = 8;
@@ -33,6 +37,11 @@ DayTimeTableWidget::DayTimeTableWidget( int dayNumber,QWidget *parent) :
     setAutoFillBackground(true);
 
     setMinimumHeight( MINIMUM_HEIGHT);
+
+    tableWidget_->verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(tableWidget_->verticalHeader(), SIGNAL(customContextMenuRequested(QPoint)),
+    SLOT(customMenuRequested(QPoint)));
 }
 
 void DayTimeTableWidget::addTask()
@@ -161,4 +170,31 @@ void DayTimeTableWidget::clear()
             tableWidget_->removeRow( 0);
     }
     valueList_.clear();
+}
+
+
+void DayTimeTableWidget::removeTask( int row)
+{
+    if( tableWidget_->rowCount())
+    {
+        tableWidget_->removeRow( row);
+    }
+    valueList_.clear();
+}
+
+void DayTimeTableWidget::customMenuRequested(QPoint pos){
+
+    QModelIndex index = tableWidget_->indexAt(pos);
+    qDebug() << "INDEX: " << index.row();
+    QMenu *menu=new QMenu(this);
+    QAction* removeAction = new QAction( QString::fromUtf8("Удалить"), this);
+    menu->addAction( removeAction);
+    menu->popup(tableWidget_->viewport()->mapToGlobal(pos));
+
+    QSignalMapper* signalMapper = new QSignalMapper(this);
+
+    connect( removeAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
+
+    signalMapper->setMapping( removeAction, index.row());
+    connect( signalMapper, SIGNAL(mapped(int)), this, SLOT(removeTask(int)));
 }
