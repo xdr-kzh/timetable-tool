@@ -73,8 +73,38 @@ void DayTimeTableWidget::addTask()
     {
         if( i == MILITARY_EVENT_NUMBER)
             timeList << QString::fromUtf8("Военная подготовка");
-        else
-            timeList << QString::number( i);
+        else{
+            switch( i)
+            {
+                case 1:
+                    timeList << QString::number( i) + " " + "08:00 - 09:35";
+                    break;
+
+                case 2:
+                    timeList << QString::number( i) + " " + "09:50 - 11:25";
+                    break;
+
+                case 3:
+                    timeList << QString::number( i) + " " + "11:40 - 13:15";
+                    break;
+
+                case 4:
+                    timeList << QString::number( i) + " " + "13:45 - 15:20";
+                    break;
+
+                case 5:
+                    timeList << QString::number( i) + " " + "15:35 - 17:10";
+                    break;
+
+                case 6:
+                    timeList << QString::number( i) + " " + "17:25 - 19:00";
+                    break;
+
+                case 7:
+                    timeList << QString::number( i) + " " + "19:15 - 20:50";
+                    break;
+            }
+        }
     }
     eventTimeComboBox->addItems( timeList);
 
