@@ -13,7 +13,7 @@
 
 const int DayTimeTableWidget::EVENT_COUNT = 8;
 const int DayTimeTableWidget::MILITARY_EVENT_NUMBER = 8;
-const int DayTimeTableWidget::MINIMUM_HEIGHT = 260;
+const int DayTimeTableWidget::MINIMUM_HEIGHT = 240;
 
 DayTimeTableWidget::DayTimeTableWidget( int dayNumber,QWidget *parent) :
     dayNumber_( dayNumber),
@@ -46,8 +46,6 @@ DayTimeTableWidget::DayTimeTableWidget( int dayNumber,QWidget *parent) :
 
 void DayTimeTableWidget::addTask()
 {
-    qDebug() << "ADD TASK";
-
     int currentRow = tableWidget_->rowCount();
     tableWidget_->insertRow( currentRow);
 

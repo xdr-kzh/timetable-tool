@@ -21,7 +21,6 @@ protected:
 
 private:
     GroupTimeTableWidget* groupWidget_;
-    QVBoxLayout* layout_;
     QMenu* menu_;
     QAction* saveAction_;
     QAction* clearAction_;

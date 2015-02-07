@@ -8,7 +8,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    layout_ = new QVBoxLayout(this);
     setWindowTitle("InfoVUZ Timetable Tool v0.2.2");
 
     timetable_ = new TimeTable( "ContactBookV2.db",this);
@@ -27,17 +26,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     menuBar()->addMenu( menu_);
 
-    setCentralWidget( groupWidget_);
 
-    scrollArea_ = new QScrollArea(this);
+    scrollArea_ = new QScrollArea();
     scrollArea_->setWidget( groupWidget_);
     scrollArea_->setWidgetResizable(true);
 
+    setCentralWidget( scrollArea_);
     resize( 1200, 800);
 
     scrollArea_->setMinimumSize( size());
 
     connect( saveAction_, SIGNAL(triggered()), groupWidget_, SLOT(saveTask()));
+    connect( clearAction_, SIGNAL(triggered()), groupWidget_, SLOT(clearAll()));
 }
 
 MainWindow::~MainWindow()
@@ -46,5 +46,4 @@ MainWindow::~MainWindow()
 void MainWindow::resizeEvent(QResizeEvent* event)
 {
     QMainWindow::resizeEvent(event);
-    scrollArea_->setMinimumSize( size());
 }
