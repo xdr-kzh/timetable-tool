@@ -17,7 +17,7 @@ public:
 
 public slots:
     void addEvent( QString groupName, int week, int eventTimeNumber, QString eventName,
-        int eventType, QString location, int day, QString teacherFirstName, QString teacherName, QString teacherLastName);
+        int eventType, QString location, int day, QString teacherFirstName, QString teacherLastName, QString teacherSureName);
 
 private:
     QString dbFileName_;
@@ -34,6 +34,9 @@ private:
     static QString TEACHER_ID_QUERY;
     static QString INSERT_TIMETABLE_QUERY;
     static QString GROUP_ID_QUERY;
+    static QString SELECT_PERSON_WITHOUT_NAME_QUERY;
+    static QString SELECT_PERSON_WITHOUT_SURENAME_QUERY;
+    static QString SELECT_PERSON_WITHOUT_NAME_AND_SURENAME_QUERY;
 };
 
 #endif // TIMETABLE_H

@@ -16,10 +16,12 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     timetable.cpp \
     grouptimetablewidget.cpp \
-    daytimetablewidget.cpp
+    daytimetablewidget.cpp \
+    timetablefileimporter.cpp
 
 HEADERS  += mainwindow.h \
     timetable.h \
     grouptimetablewidget.h \
     daytimetablewidget.h \
-    definitions.h
+    definitions.h \
+    timetablefileimporter.h

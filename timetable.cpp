@@ -9,7 +9,10 @@ QString TimeTable::SELECT_GROUP_QUERY = "SELECT _id FROM battle_group WHERE name
 QString TimeTable::INSERT_BATTLE_GROUP_QUERY = QString::fromUtf8("INSERT INTO battle_group(name) VALUES (?)");
 QString TimeTable::INSERT_EVENT_QUERY = QString::fromUtf8(
     "INSERT INTO event(week,start_time,end_time,discipline,type_id,location,day) VALUES ( ?, ?, ?, ?, ?, ?, ?);");
-QString TimeTable::SELECT_PERSON_QUERY = "SELECT _id FROM Persons WHERE Name = (?) AND LastName = (?) AND SureName = (?)";
+QString TimeTable::SELECT_PERSON_QUERY              = "SELECT _id FROM Persons WHERE Name = (?) AND LastName = (?) AND SureName = (?)";
+QString TimeTable::SELECT_PERSON_WITHOUT_NAME_QUERY = "SELECT _id FROM Persons WHERE (Name is null or Name = '') AND LastName = (?) AND SureName = (?)";
+QString TimeTable::SELECT_PERSON_WITHOUT_NAME_AND_SURENAME_QUERY = "SELECT _id FROM Persons WHERE (Name is null or Name = '') AND LastName = (?) AND (SureName is null or SureName = '')";
+QString TimeTable::SELECT_PERSON_WITHOUT_SURENAME_QUERY = "SELECT _id FROM Persons WHERE Name = (?) AND LastName = (?) AND (SureName is null or SureName = '')";
 QString TimeTable::GET_EVENT_TYPE_QUERY = "";
 QString TimeTable::INSERT_PERSON_QUERY = "INSERT INTO `Persons`(`Name`,`LastName`,`SureName`) VALUES (?, ?, ?)";
 QString TimeTable::INSERT_TIMETABLE_QUERY = "INSERT INTO `TimeTable`(`EventId`,`OwnerTypeId`,`OwnerId`,`IsEmcee`) VALUES ( ?, ?, ?, ?);";
@@ -35,7 +38,7 @@ TimeTable::TimeTable(QString dbFileName, QObject *parent) :
 }
 
 void TimeTable::addEvent( QString groupName, int week, int eventTimeNumber, QString eventName,
-    int eventType, QString location, int day, QString teacherName, QString teacherLastName, QString teacherSureName)
+    int eventType, QString location, int day, QString teacherFirstName, QString teacherLastName, QString teacherSureName)
 {
     qDebug() << "========================================================";
     QSqlQuery dbQuery;
@@ -48,8 +51,6 @@ void TimeTable::addEvent( QString groupName, int week, int eventTimeNumber, QStr
     if (!b) {
         qDebug() << "Ошибка выполнения запроса 0";
     }
-    else
-        qDebug() << dbQuery.lastQuery();
 
     int groupId = 0;
 
@@ -69,8 +70,6 @@ void TimeTable::addEvent( QString groupName, int week, int eventTimeNumber, QStr
     }
     else
         groupId = dbQuery.value(0).toInt();
-
-    qDebug() << "1:" << dbQuery.lastQuery();
 
     /************---------2nd----------************/
     int startTime = 0;
@@ -98,8 +97,6 @@ void TimeTable::addEvent( QString groupName, int week, int eventTimeNumber, QStr
     if (!b) {
         qDebug() << "Ошибка выполнения запроса 2";
     }
-    else
-        qDebug() <<  "2:" << dbQuery.lastQuery();
 
     /************---------3rd----------************/
 
@@ -107,26 +104,46 @@ void TimeTable::addEvent( QString groupName, int week, int eventTimeNumber, QStr
     eventId = dbQuery.lastInsertId().toInt();
 
     int teacherId = 0;
-    query = SELECT_PERSON_QUERY;
-    dbQuery.prepare( query);
-    dbQuery.bindValue( 0, teacherName);
-    dbQuery.bindValue( 1, teacherLastName);
-    dbQuery.bindValue( 2, teacherSureName);
+    if( teacherFirstName.isEmpty() && teacherSureName.isEmpty())
+    {
+        query = SELECT_PERSON_WITHOUT_NAME_AND_SURENAME_QUERY;
+        dbQuery.prepare( query);
+        dbQuery.bindValue( 0, teacherLastName);
+    }
+    else if( teacherSureName.isEmpty())
+    {
+        query = SELECT_PERSON_WITHOUT_SURENAME_QUERY;
+        dbQuery.prepare( query);
+        dbQuery.bindValue( 0, teacherFirstName);
+        dbQuery.bindValue( 1, teacherLastName);
+    }
+    else if( teacherFirstName.isEmpty())
+    {
+        query = SELECT_PERSON_WITHOUT_NAME_QUERY;
+        dbQuery.prepare( query);
+        dbQuery.bindValue( 0, teacherLastName);
+        dbQuery.bindValue( 1, teacherSureName);
+    }
+    else
+    {
+        query = SELECT_PERSON_QUERY;
+        dbQuery.prepare( query);
+        dbQuery.bindValue( 0, teacherFirstName);
+        dbQuery.bindValue( 1, teacherLastName);
+        dbQuery.bindValue( 2, teacherSureName);
+    }
 
     b = dbQuery.exec();
     if (!b) {
         qDebug() << "Ошибка выполнения запроса 3.5";
     }
 
-    else
-        qDebug() << "3:" <<  dbQuery.lastQuery();
-
     if(!dbQuery.next())
     {
         //добавляем препода
         query = INSERT_PERSON_QUERY;
         dbQuery.prepare( query);
-        dbQuery.bindValue( 0, teacherName);
+        dbQuery.bindValue( 0, teacherFirstName);
         dbQuery.bindValue( 1, teacherLastName);
         dbQuery.bindValue( 2, teacherSureName);
         b = dbQuery.exec();
@@ -136,7 +153,6 @@ void TimeTable::addEvent( QString groupName, int week, int eventTimeNumber, QStr
     else
         teacherId = dbQuery.value(0).toInt();
 
-    qDebug() <<  "4:" << dbQuery.lastQuery();
 
     /************---------4th----------************/
     qDebug() << "FINAL: " << eventId <<" " << groupId << " " << teacherId;
@@ -151,8 +167,6 @@ void TimeTable::addEvent( QString groupName, int week, int eventTimeNumber, QStr
     if (!b) {
         qDebug() << "Ошибка выполнения запроса 4a";
     }
-    else
-        qDebug() << dbQuery.lastQuery();
     //препод
     query = INSERT_TIMETABLE_QUERY;
     dbQuery.prepare( query);
@@ -165,8 +179,6 @@ void TimeTable::addEvent( QString groupName, int week, int eventTimeNumber, QStr
     if (!b) {
         qDebug() << "Ошибка выполнения запроса 4b";
     }
-    else
-        qDebug() <<  "5:" << dbQuery.lastQuery();
     qDebug() << "========================================================";
 }
 

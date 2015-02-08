@@ -8,6 +8,8 @@
 
 #include "grouptimetablewidget.h"
 
+class TimeTable;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -15,6 +17,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+public slots:
+    void chooseImportFile();
 
 protected:
     void resizeEvent(QResizeEvent* event);
@@ -24,6 +29,7 @@ private:
     QMenu* menu_;
     QAction* saveAction_;
     QAction* clearAction_;
+    QAction* importAction_;
     QScrollArea *scrollArea_;
 
     TimeTable* timetable_;
