@@ -44,13 +44,18 @@ TimetableFileImporter::TimetableFileImporter(TimeTable* timetable, QObject *pare
 
     time_.insert( std::pair<QString, int>( QString::fromUtf8("8:00"), 1));
     time_.insert( std::pair<QString, int>( QString::fromUtf8("9:50"), 2));
+    time_.insert( std::pair<QString, int>( QString::fromUtf8("08:00"), 1));
+    time_.insert( std::pair<QString, int>( QString::fromUtf8("09:50"), 2));
     time_.insert( std::pair<QString, int>( QString::fromUtf8("11:40"), 3));
     time_.insert( std::pair<QString, int>( QString::fromUtf8("13:45"), 4));
     time_.insert( std::pair<QString, int>( QString::fromUtf8("15:35"), 5));
     time_.insert( std::pair<QString, int>( QString::fromUtf8("17:25"), 6));
+    time_.insert( std::pair<QString, int>( QString::fromUtf8("19:15"), 7));
 
     type_.insert( std::pair<QString, int>( QString::fromUtf8("лек"), 1));
+    type_.insert( std::pair<QString, int>( QString::fromUtf8("Лекция"), 1));
     type_.insert( std::pair<QString, int>( QString::fromUtf8("лб"), 2));
+    type_.insert( std::pair<QString, int>( QString::fromUtf8("Лабораторная"), 2));
     type_.insert( std::pair<QString, int>( QString::fromUtf8("ВОЕННОЙ"),3));
 }
 
