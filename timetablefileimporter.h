@@ -4,6 +4,7 @@
 #include "timetable.h"
 
 #include <QObject>
+#include <QJsonDocument>
 
 class TimetableFileImporter : public QObject
 {
@@ -37,7 +38,8 @@ public:
     TimetableFileImporter(TimeTable* timetable, QObject *parent = 0);
 
 public slots:
-    void import( QString filename);
+//    void importFile( QString filename);
+    void importJSON( QJsonDocument* timeTable);
 
 private:
     TimeTable* timetable_;

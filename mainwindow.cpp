@@ -7,6 +7,7 @@
 
 #include "timetable.h"
 #include "timetablefileimporter.h"
+#include "parser.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -64,8 +65,10 @@ void MainWindow::chooseImportFile()
             QFileDialog::getOpenFileName( this, QString::fromUtf8("Выберите файл для импорта расписания"), "", "Text Files(*.*)");
     if( !filename.isEmpty())
     {
+        QJsonDocument* document = Parser::parseFvt( filename);
+
         TimetableFileImporter importer( timetable_, this);
-        importer.import( filename);
+        importer.importJSON( document);
         QMessageBox::information( this, QString::fromUtf8("Импорт"),
                                   QString::fromUtf8("Импорт успешно завершен"));
     }

@@ -59,19 +59,23 @@ TimetableFileImporter::TimetableFileImporter(TimeTable* timetable, QObject *pare
     type_.insert( std::pair<QString, int>( QString::fromUtf8("ВОЕННОЙ"),3));
 }
 
-void TimetableFileImporter::import( QString filename)
-{
-    QFile textFile( filename, this);
-    QString jsonData;
-    bool ret = textFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    if( ret)
-    {
-        QTextStream in(&textFile);
-        jsonData = in.readAll();
-    }
+//void TimetableFileImporter::importFile( QString filename)
+//{
+//    QFile textFile( filename, this);
+//    QString jsonData;
+//    bool ret = textFile.open(QIODevice::ReadOnly | QIODevice::Text);
+//    if( ret)
+//    {
+//        QTextStream in(&textFile);
+//        jsonData = in.readAll();
+//    }
+//    QJsonDocument* timeTable = QJsonDocument::fromJson( jsonData.toUtf8());
+//    importJSON( timeTable);
+//}
 
-    QJsonDocument timeTable = QJsonDocument::fromJson( jsonData.toUtf8());
-    QJsonArray jsonArray = timeTable.array();
+void TimetableFileImporter::importJSON( QJsonDocument* timeTable)
+{
+    QJsonArray jsonArray = timeTable->array();
 
     foreach (const QJsonValue & value, jsonArray)
     {
